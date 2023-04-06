@@ -5,22 +5,28 @@ You are about to enter a mistic and eerie world, full of wonders
 that will unfold before your eyes. Your progress will be saved
 automatically
 
-[yes_or_no: p] Are you ready to proceed?
-#[{p} no]
-#  [end]
+#[yes_or_no: p] Are you ready to proceed?
+[{name} 'john']
+  Hey youre john
+  ok
+[endblock]
+[{name} 'alex']
+  Hey youre alex
+  ok
+[endblock]
 
-I am on a planet called gernard's planet. You are on a 
-scientific mission, to collect as much information as 
+I am on a planet called gernard's planet. You are on a
+scientific mission, to collect as much information as
 possible from this planet
 
 At first glance the planet look indistinguishable
-from Earth. The grass seems green the sky is blue and 
-bright and cherfull. etc. However the trees are wierdly 
+from Earth. The grass seems green the sky is blue and
+bright and cherfull. etc. However the trees are wierdly
 shaped. There are no animals around. I wonder if there are any
 smart-ass civilization set up.
 
 I going to inspect closely...
-[branch: k] 
+#[branch: k]
 1. a wierd tree
 2. a large boulder
 
@@ -28,4 +34,3 @@ I going to inspect closely...
   You inspect closer a wierd tree
 #[{k} 2]
   You inspect closer a large boulder
-  
