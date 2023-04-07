@@ -34,7 +34,7 @@ def txtout(txt):
     for example:
         My name is {name}
     '''
-    embedded_var = re.findall(r'\{(.+?)\}', txt)
+    embedded_var = re.findall(r'\{[ ]*(.+?)[ ]*\}', txt)
     for var in embedded_var:
         txt = re.sub(r'(\{.+?\})', in_game_vars[var], txt, count = 1)
 
@@ -66,15 +66,50 @@ def play(gest_file):
                 [command: var] text
             for example:
                 [input: name] Enter your name:
-
             '''
             com = re.search(r'\[[ ]*(.+?)[ ]*:[ ]*(.+?)[ ]*\][ ]*(.+?)$', line)
             if com:
-                if(com.group(1) == 'input'):
-                    txtout(com.group(3) + ' ')
-                    in_game_vars[com.group(2)] = input()
-                line_index += 1
-                continue
+                command = com.group(1)
+                var = com.group(2)
+                prompt = com.group(3)
+                if(command == 'input'):
+                    '''
+                    INPUT COMMAND
+                    Syntax:
+                        [input: var] some text
+                    for example:
+                        [input: name] Enter your name:
+                        
+                    The name will be stored in the varible 'name' which
+                    can be accessed by `{name}`
+                    '''
+                    txtout(prompt + ' ')
+                    in_game_vars[var] = input()
+                    line_index += 1
+                    continue
+                
+                elif(command == 'yes_or_no'):
+                    '''
+                    YES_OR_NO COMMAND
+                    Syntax:
+                        [yes_or_no: var] some question
+                    for example:
+                        [yes_or_no: p] Are you ready to proceed
+                    while playing the above example yould be displayed
+                    as:
+                        Are you ready to proceed (y/n): 
+                    '''
+                    txtout(prompt + ' (y/n): ')
+                    inp = input()
+                    if inp == 'y':
+                        in_game_vars[var] = 'yes'
+                    elif inp == 'n':
+                        in_game_vars[var] = 'no'
+                    else:
+                        txtout("Invalid input. Try again\n\n")
+                        continue
+                    line_index += 1
+                    continue
 
             '''
             VARIABLE EQUALITY CONDITION
@@ -113,9 +148,11 @@ def play(gest_file):
                     line_index = jump_to
                     continue
 
-            if re.match(r'\[[ ]*endblock[ ]*\]', line):
+            if re.match(r'[ ]*\[[ ]*endblock[ ]*\]', line):
                 line_index += 1
                 continue
+            if re.match(r'[ ]*\[[ ]*abort[ ]*\]', line):
+                break
 
             txtout(trim(line))
             line_index += 1

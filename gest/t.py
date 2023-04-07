@@ -1,3 +1,2 @@
-str = "sfsssfsd"
-str = str[:0]
+str = 'val' if True 
 print(str)
