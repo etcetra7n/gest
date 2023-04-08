@@ -58,7 +58,10 @@ def play(gest_file):
             # COMMENTS
             if('#' in line):
                 chr_index = line.find('#')
-                line = line[:chr_index] + '\n'
+                if (trim((lines[line_index+1])).startswith('#')):
+                    line = line[:chr_index]
+                else:
+                    line = line[:chr_index] + '\n'
 
             '''
             COMMAND WITH VARIABLE

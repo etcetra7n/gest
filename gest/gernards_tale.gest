@@ -1,15 +1,12 @@
 [input: name] Enter you player name:
 Hello { name }. Welcome to Gernard's Tale
 
-[on game_start]  #not yet implemented
-  You are playing Gernard's Tale
-[endblock]
-[on game_end]  #not yet implemented
-  Thanks for playing
-[endblock]
-[on session_start]  #not yet implemented
-  You are playing Gernard's Tale
-[endblock]
+#[on game_end]  #not yet implemented
+#  Thanks for playing
+#[endblock]
+#[on session_start]  #not yet implemented
+#  You are playing Gernard's Tale
+#[endblock]
 
 You are about to enter a mistic and eerie world, full of wonders
 that will unfold before your eyes. Your progress will be saved
@@ -41,8 +38,10 @@ I going to inspect closely...
 #[branch: k] #feature not implemented yet
 1. a wierd tree
 2. a large boulder
-
-#[{k} 1]
+[endblock]
+#[k 1]
   You inspect closer a wierd tree
-#[{k} 2]
+[endblock]
+#[k 2]
   You inspect closer a large boulder
+[endblock]
