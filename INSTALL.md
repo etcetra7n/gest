@@ -28,6 +28,6 @@ Install it using a simple pip install command
 ```s
 pyinstaller src/gest.py
 ```
-**Note:** Using this installation method the game may seem to 
+**Note:** If you use this installation method, the game may seem to 
 run slower in *some* terminals. If the game runs laggy, either try using
 other terminals or try other installation methods
