@@ -7,9 +7,6 @@ import pickle
 import colorama
 from colorama import Fore
 
-in_game_vars = {}
-gsav_file = None
-
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
     in_game_vars['line_index'] = 0
@@ -18,6 +15,7 @@ def init_in_game_vars(gest_file):
     return
 
 def save():
+    gsav_file.seek(0)
     pickle.dump(in_game_vars, gsav_file)
 
 def trim(str):
@@ -90,7 +88,7 @@ def play():
                         [input: var] some text
                     for example:
                         [input: name] Enter your name:
-                        
+
                     The name will be stored in the varible 'name' which
                     can be accessed by `{name}`
                     '''
@@ -98,7 +96,7 @@ def play():
                     in_game_vars[var] = input()
                     line_index += 1
                     continue
-                
+
                 elif(command == 'yes_or_no'):
                     '''
                     YES_OR_NO COMMAND
@@ -108,7 +106,7 @@ def play():
                         [yes_or_no: p] Are you ready to proceed
                     while playing the above example yould be displayed
                     as:
-                        Are you ready to proceed (y/n): 
+                        Are you ready to proceed (y/n):
                     '''
                     txtout(prompt + ' (y/n): ')
                     inp = input()
@@ -169,7 +167,11 @@ def play():
             line_index += 1
     save()
 
-if __name__=='__main__':
+def main():
+    global in_game_vars
+    global gsav_file
+    in_game_vars = {}
+    gsav_file = None
     if len(argv)<2:
         print(Fore.RED + "\nError:" + Fore.RESET + " Argument not provided")
         exit()
@@ -178,7 +180,7 @@ if __name__=='__main__':
         print(Fore.RED + "\nError:" + Fore.RESET + " This file cannot be located")
     try:
         if(file.endswith('.gest')):
-            init_in_game_vars(argv[1])
+            init_in_game_vars(file)
             gsav_file = open(in_game_vars['gsav_file'], 'wb')
             play()
             gsav_file.close()
@@ -193,3 +195,6 @@ if __name__=='__main__':
 Only .gest and .gsav file extentions are supported")
     except KeyboardInterrupt:
         exit() #exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
+
+if __name__=='__main__':
+    main()
