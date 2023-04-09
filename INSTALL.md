@@ -23,7 +23,7 @@ run slower in *some* terminals. If the game runs laggy, either try using
 other terminals or try other installation methods
 
 ### Build from source
-Pyinstaller is required for this method. If you dont have it installed.
+Pyinstaller is required for this method. If you dont have it installed,
 Install it using a simple pip install command
 ```s
 pyinstaller src/gest.py
