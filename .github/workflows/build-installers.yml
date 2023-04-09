@@ -31,7 +31,7 @@ jobs:
           echo "EnVar plugin installation complete."
       - name: Build binaries
         run: |
-          python -m pyinstaller src/gest.py
+          pyinstaller src/gest.py
       - name: Compress into tar.gz
         uses: a7ul/tar-action@v1.1.0
         id: compress
