@@ -1,6 +1,6 @@
 [project]
 name = "gester"
-version = "1.0.0"
+version = "1.1.0"
 description = "A game engine for console based text game"
 readme = "README.md"
 keywords = ["games", "game development", "game engine", "console"]
@@ -10,7 +10,7 @@ authors = [
 ]
 requires-python = ">=2.7"
 classifiers = [
-    "Topic :: Games/Entertainment"
+    "Topic :: Games/Entertainment",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
@@ -28,8 +28,8 @@ classifiers = [
 ]
 
 [project.scripts]
-gest = "gest"
+gest = "gest:main"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/etcetra7n/gest/issues"
-repository = '"https://github.com/etcetra7n/gest"'
+repository = "https://github.com/etcetra7n/gest"
