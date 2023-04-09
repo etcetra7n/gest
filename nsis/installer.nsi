@@ -12,9 +12,6 @@
 !ifndef ARCH
   !define ARCH "x86"
 !endif
-!ifndef GEST_EXE_PATH
-  !define GEST_EXE_PATH "..\dist\gest.exe"
-!endif
 !ifndef LICENSE_PATH
   !define LICENSE_PATH "..\LICENSE"
 !endif
@@ -70,7 +67,7 @@ BrandingText "GEST ${VERSION}"
 Section "Basic installation" SEC_BASIC_INSTALLATION
   ; Write gest.exe to $INSTDIR
   SetOutPath $INSTDIR
-  File ${GEST_EXE_PATH}
+  File "..\dist\gest\"
   ;File ${CPY_ICO_PATH}
 
   ; Register application
