@@ -87,7 +87,7 @@ Section "Add to PATH" SEC_ADD_TO_PATH
   EnVar::AddValue "PATH" "$INSTDIR"
 SectionEnd
 
-Section "Configure .gest file typy" SEC_CONFIG_GEST_FILE
+Section "Configure .gest and .gsav file type" SEC_CONFIG_GEST_FILE
   WriteRegStr HKCR .gest "" "GEST.GameFile.1"
   WriteRegStr HKCR .gest "Content Type" "text/plain"
   WriteRegStr HKCR .gest "PerceivedType" "text"
@@ -95,6 +95,14 @@ Section "Configure .gest file typy" SEC_CONFIG_GEST_FILE
   ;WriteRegStr HKCR GEST.GameFile.1\DefaultIcon "" "$INSTDIR\gest.ico"
   WriteRegStr HKCR GEST.GameFile.1\shell\open\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
   WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gest\UserChoice "Progid" "GEST.GameFile.1"
+  
+  WriteRegStr HKCR .gsav "" "GEST.SaveFile.1"
+  WriteRegStr HKCR .gsav "Content Type" "text/plain"
+  WriteRegStr HKCR .gsav "PerceivedType" "text"
+  WriteRegStr HKCR GEST.SaveFile.1 "" "GEST Save File"
+  ;WriteRegStr HKCR GEST.SaveFile.1\DefaultIcon "" "$INSTDIR\gsav.ico"
+  WriteRegStr HKCR GEST.SaveFile.1\shell\open\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
+  WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gsav\UserChoice "Progid" "GEST.SaveFile.1"
 SectionEnd
 
 Section "Enable $\"Play$\" button in right-click context menu" SEC_ENABLE_CONTEXT_MENU
@@ -123,9 +131,12 @@ Section "un.Remove from PATH" UNSEC_REMOVE_FROM_PATH
   EnVar::DeleteValue "PATH" "$INSTDIR"
 SectionEnd
 
-Section "un.Unconfigure .gest file type" UNSEC_UNCONFIG_GEST_FILE
+Section "un.Unconfigure .gest and .gsav file type" UNSEC_UNCONFIG_GEST_FILE
   DeleteRegKey HKCR GEST.GameFile.1
   DeleteRegKey HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gest
+  
+  DeleteRegKey HKCR GEST.SaveFile.1
+  DeleteRegKey HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gsav
 SectionEnd
 
 Section "un.Disable $\"Play$\" button in right-click context menu" UNSEC_DISABLE_CONTEXT_MENU
@@ -136,16 +147,16 @@ SectionEnd
 ; Component Description
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_BASIC_INSTALLATION} "Places gest.exe in the installation directory"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_ADD_TO_PATH} "Lets you to use the gest command in the command line"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_CONFIG_GEST_FILE} "Lets you use .gest files on your system"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_BASIC_INSTALLATION} "Places files in the installation directory"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_ADD_TO_PATH} "Lets you to use the `gest` command in the command line"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_CONFIG_GEST_FILE} "Configures .gest and .gsav file types in your system"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_ENABLE_CONTEXT_MENU} "Adds a $\"Play$\" option to the right click context menu of every file types"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_BASIC_UNINSTALLATION} "Removes gest.exe from the installation directory"
-  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_REMOVE_FROM_PATH} "You will no longer be able to use the gest command in the command line"
-  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_UNCONFIG_GEST_FILE} "Removes .gest file configuration from your system"
+  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_BASIC_UNINSTALLATION} "Removes files from the installation directory"
+  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_REMOVE_FROM_PATH} "You will no longer be able to use the `gest` command in the command line"
+  !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_UNCONFIG_GEST_FILE} "Removes .gest and .gsav file type configuration from your system"
   !insertmacro MUI_DESCRIPTION_TEXT ${UNSEC_DISABLE_CONTEXT_MENU} "Removes the $\"Play$\" option from the right click context menu"
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
