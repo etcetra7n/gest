@@ -1,16 +1,23 @@
 from sys import argv, stdout, exit
 from time import sleep
-from os.path import isfile
+from os.path import isfile, abspath
 import re
-from keyboard import is_pressed
+#from keyboard import is_pressed
+import pickle
 
 in_game_vars = {}
 
-def save():
-    fname = re.search(r'^(.+?)\.')
-    with open(fname.group(1) + '.gsave', 'w') as sfile:
-        sfile.write(argv[1])
+def init_in_game_vars(gest_file):
+    in_game_vars['gest_file'] = abspath(gest_file)
+    in_game_vars['line_index'] = 0
+    gsav_file = re.search(r'^(.+?)\.gest$', abspath(gest_file))
+    in_game_vars['gsav_file'] = gsav_file.group(1) + '.gsav'
+    return
 
+def save():
+    with open(in_game_vars['gsav_file'], 'wb') as sf:
+        pickle.dump(in_game_vars, sf)
+    return
 
 def trim(str):
     begin = 0
@@ -43,14 +50,13 @@ def txtout(txt):
         stdout.flush()
         sleep(0.02)
 
-def play(gest_file):
-    if not(isfile(gest_file)):
-        print("\nERROR: The requested GEST game cannot be found")
-        return
-    with open(gest_file, 'r') as f:
+def play():
+    with open(in_game_vars['gest_file'], 'r') as f:
         lines = f.readlines()
-        line_index = 0;
+        line_index = in_game_vars['line_index']
         while(True):
+            in_game_vars['line_index'] = line_index
+            save()
             if(line_index >= len(lines)):
                 break
             line = lines[line_index]
@@ -160,9 +166,24 @@ def play(gest_file):
 
             txtout(trim(line))
             line_index += 1
+    save()
 
 if __name__=='__main__':
-    try:
-        play(argv[1])
-    except KeyboardInterrupt:
+    if len(argv)<1:
+        print("\nError: Argument not provided")
         exit()
+    file = argv[1]
+    if not(isfile(file)):
+        print("\nERROR: This file cannot be located")
+    try:
+        if(file.endswith('.gest')):
+            init_in_game_vars(argv[1])
+            play()
+        elif(file.endswith('.gsav')):
+            with open(file, 'rb') as sf:
+                in_game_vars = pickle.load(sf)
+            play()
+        else:
+            print("\nERROR: Unrecognized file type. Only .gest and .gsav file extentions are supported")
+    except KeyboardInterrupt:
+        exit() #exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
