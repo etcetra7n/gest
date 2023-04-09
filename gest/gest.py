@@ -4,8 +4,11 @@ from os.path import isfile, abspath
 import re
 #from keyboard import is_pressed
 import pickle
+import colorama
+from colorama import Fore
 
 in_game_vars = {}
+gsav_file = None
 
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
@@ -15,9 +18,7 @@ def init_in_game_vars(gest_file):
     return
 
 def save():
-    with open(in_game_vars['gsav_file'], 'wb') as sf:
-        pickle.dump(in_game_vars, sf)
-    return
+    pickle.dump(in_game_vars, gsav_file)
 
 def trim(str):
     begin = 0
@@ -116,7 +117,7 @@ def play():
                     elif inp == 'n':
                         in_game_vars[var] = 'no'
                     else:
-                        txtout("Invalid input. Try again\n\n")
+                        txtout(Fore.YELLOW + "\nInvalid input:"+ Fore.RESET +" Try again\n\n"+ Fore.RESET)
                         continue
                     line_index += 1
                     continue
@@ -153,7 +154,7 @@ def play():
                             jump_to = i+1
                             break
                     else:
-                        print("\nGAME SYNTAX ERROR: endblock not found")
+                        print(Fore.RED + "\nError:" + Fore.RESET +" endblock not found")
                         exit()
                     line_index = jump_to
                     continue
@@ -169,21 +170,26 @@ def play():
     save()
 
 if __name__=='__main__':
-    if len(argv)<1:
-        print("\nError: Argument not provided")
+    if len(argv)<2:
+        print(Fore.RED + "\nError:" + Fore.RESET + " Argument not provided")
         exit()
     file = argv[1]
     if not(isfile(file)):
-        print("\nERROR: This file cannot be located")
+        print(Fore.RED + "\nError:" + Fore.RESET + " This file cannot be located")
     try:
         if(file.endswith('.gest')):
             init_in_game_vars(argv[1])
+            gsav_file = open(in_game_vars['gsav_file'], 'wb')
             play()
+            gsav_file.close()
         elif(file.endswith('.gsav')):
             with open(file, 'rb') as sf:
                 in_game_vars = pickle.load(sf)
+            gsav_file = open(in_game_vars['gsav_file'], 'wb')
             play()
+            gsav_file.close()
         else:
-            print("\nERROR: Unrecognized file type. Only .gest and .gsav file extentions are supported")
+            print(Fore.RED + "\nError:" + Fore.RESET + " Unrecognized file type. \
+Only .gest and .gsav file extentions are supported")
     except KeyboardInterrupt:
         exit() #exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
