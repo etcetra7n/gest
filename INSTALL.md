@@ -1,13 +1,13 @@
 # Installation
 
-### Using pip (recommended)
+## Using pip (recommended)
 If you have python installed, run the following script
 
 ```s
 pip install gester
 ```
 
-### Using NSIS (Only on windows)
+## Using NSIS (Only on windows)
 NSIS software can be used to create a installer (or setup) executable.
 Download the NSIS software on [sourceforge](https://nsis.sourceforge.io/Download)
 After installing NSIS, run the following command
@@ -22,7 +22,7 @@ set up file type configurations which will make it easier to run the games
 run slower in *some* terminals. If the game runs laggy, either try using
 other terminals or try other installation methods
 
-### Build from source
+## Build from source
 Pyinstaller is required for this method. If you dont have it installed,
 Install it using a simple pip install command. Then run the following command:
 ```s
