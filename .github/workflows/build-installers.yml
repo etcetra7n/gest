@@ -1,0 +1,56 @@
+name: Windows installer build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "GEST Version"
+        required: true
+        default: "1.1.0"
+        type: string
+
+jobs:
+  win64_build:
+    name: Build x64 installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          choco install upx
+          echo "Installing EnVar plugin for NSIS..."
+          echo "Downloading 'EnVar_plugin.zip' from 'https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip'..."
+          Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip
+          echo "Extracting 'EnVar_plugin.zip' to 'EnVar_plugin'"
+          7z x EnVar_plugin.zip -oEnVar_plugin
+          echo "Copying plugin files to 'C:/Program Files (x86)/NSIS/Plugins'"
+          Copy-Item -Path EnVar_plugin/Plugins/x86-ansi/EnVar.dll -Destination "C:/Program Files (x86)/NSIS/Plugins/x86-ansi" -PassThru
+          Copy-Item -Path EnVar_plugin/Plugins/x86-unicode/EnVar.dll -Destination "C:/Program Files (x86)/NSIS/Plugins/x86-unicode" -PassThru
+          echo "EnVar plugin installation complete."
+      - name: Build binaries
+        run: |
+          pyinstaller src/gest.py
+      - name: Compress into tar.gz
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          cwd: .
+          files: |
+            ./dist/gest
+          outPath: gest-x64.tar.gz
+      
+      - name: Upload binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: gest-${{ github.event.inputs.version }}-win-x64.tar.gz
+          path: gest-x64.tar.gz
+      - name: Build installer
+        run: |
+          makensis /DVERSION="${{ github.event.inputs.version }}" /DARCH="x64" "nsis/installer.nsi"
+      - name: Upload installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: gest-v${{ github.event.inputs.version }}-win-x64-setup.exe
+          path: Installer/gest-v${{ github.event.inputs.version }}-win-x64-setup.exe
