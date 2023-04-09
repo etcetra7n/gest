@@ -4,7 +4,7 @@
 If you have python installed, run the following script
 
 ```s
-pip install gester==1.1.0
+pip install gester
 ```
 
 #### Using NSIS (Only on windows)

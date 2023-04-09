@@ -2,6 +2,11 @@
 
 A game engine for console based text game
 
+```s
+pip install gester
+```
+
+See an example text game
 ```
 $ gest gernards_tale.gest
 
