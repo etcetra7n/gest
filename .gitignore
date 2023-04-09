@@ -177,3 +177,5 @@ pyrightconfig.json
 
 *.exe
 _ignore/
+*.gest
+*.gsav
