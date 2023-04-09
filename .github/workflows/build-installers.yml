@@ -19,6 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           choco install upx
+          pip install pyinstaller
           echo "Installing EnVar plugin for NSIS..."
           echo "Downloading 'EnVar_plugin.zip' from 'https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip'..."
           Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip
@@ -30,7 +31,7 @@ jobs:
           echo "EnVar plugin installation complete."
       - name: Build binaries
         run: |
-          pyinstaller src/gest.py
+          python -m pyinstaller src/gest.py
       - name: Compress into tar.gz
         uses: a7ul/tar-action@v1.1.0
         id: compress
