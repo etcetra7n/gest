@@ -24,7 +24,7 @@ other terminals or try other installation methods
 
 ### Build from source
 Pyinstaller is required for this method. If you dont have it installed,
-Install it using a simple pip install command
+Install it using a simple pip install command. Then run the following command:
 ```s
 pyinstaller src/gest.py
 ```
