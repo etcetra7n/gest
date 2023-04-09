@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 ### Using pip (recommended)
 If you have python installed, run the following script
