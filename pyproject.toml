@@ -10,6 +10,7 @@ authors = [
 ]
 requires-python = ">=2.7"
 classifiers = [
+    "Topic :: Games/Entertainment"
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
