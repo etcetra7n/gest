@@ -4,7 +4,6 @@ from os.path import isfile, abspath
 import re
 #from keyboard import is_pressed
 import pickle
-import colorama
 from colorama import Fore
 
 def init_in_game_vars(gest_file):
@@ -12,6 +11,7 @@ def init_in_game_vars(gest_file):
     in_game_vars['line_index'] = 0
     gsav_file = re.search(r'^(.+?)\.gest$', abspath(gest_file))
     in_game_vars['gsav_file'] = gsav_file.group(1) + '.gsav'
+    in_game_vars['_scene_return'] = []
     return
 
 def save():
@@ -31,6 +31,17 @@ def trim(str):
             break
     return str[begin:end]
 
+def block(str, lines):
+    jump_index = 0
+    for i in range(in_game_vars['line_index']+1, len(lines)):
+        if re.match(r' *\[ *'+str+r' *\]', lines[i]):
+            jump_index = i+1
+            break
+    else:
+        print(Fore.RED + "\nnScript Error: " + Fore.RESET +"["+ str +"] not found")
+        exit()
+    return jump_index
+
 def txtout(txt):
 
     '''
@@ -40,7 +51,7 @@ def txtout(txt):
     for example:
         My name is {name}
     '''
-    embedded_var = re.findall(r'\{[ ]*(.+?)[ ]*\}', txt)
+    embedded_var = re.findall(r'\{ *(.+?) *\}', txt)
     for var in embedded_var:
         txt = re.sub(r'(\{.+?\})', in_game_vars[var], txt, count = 1)
 
@@ -76,7 +87,7 @@ def play():
             for example:
                 [input: name] Enter your name:
             '''
-            com = re.search(r'\[[ ]*(.+?)[ ]*:[ ]*(.+?)[ ]*\][ ]*(.+?)$', line)
+            com = re.search(r'\[ *(.+?) *: *(.+?) *\] *(.+?)?$', line)
             if com:
                 command = com.group(1)
                 var = com.group(2)
@@ -115,10 +126,23 @@ def play():
                     elif inp == 'n':
                         in_game_vars[var] = 'no'
                     else:
-                        txtout(Fore.YELLOW + "\nInvalid input:"+ Fore.RESET +" Try again\n\n"+ Fore.RESET)
+                        txtout(Fore.YELLOW + "\nInvalid input:"+ Fore.RESET +" Try again\n\n")
                         continue
                     line_index += 1
                     continue
+
+            play_scene = re.search(r'\[ *play *: *(.+?) *\]', line)
+            if play_scene:
+                in_game_vars['_scene_return'].append(line_index+1)
+                scene_name = play_scene.group(1)
+                for l in range(len(lines)):
+                    if re.match(r' *\[ *scene *: *'+ scene_name + r' *\]', lines[l]):
+                        line_index = l+1
+                        break
+                else:
+                    print(Fore.RED+"\nScript Error:"+Fore.RESET+" Scene `"+scene_name+"` is not defined")
+                    exit()
+                continue
 
             '''
             VARIABLE EQUALITY CONDITION
@@ -139,28 +163,27 @@ def play():
                 ...
                 [endblock]
             '''
-            con = re.search(r'\[[ ]*\{(.+?)\}[ ]+[\'"]?(.+?)[\'"]?[ ]*\]', line)
+            con = re.search(r'\[ *\{(.+?)\} +[\'"]?(.+?)[\'"]? *\]', line)
             if con:
                 if in_game_vars[con.group(1)] == con.group(2):
                     line_index += 1
                     continue
 
                 else:
-                    jump_to = line_index
-                    for i in range(line_index+1, len(lines)):
-                        if re.match(r'\[[ ]*endblock[ ]*\]', lines[i]):
-                            jump_to = i+1
-                            break
-                    else:
-                        print(Fore.RED + "\nError:" + Fore.RESET +" endblock not found")
-                        exit()
-                    line_index = jump_to
+                    line_index = block('endblock', lines)+1
                     continue
+            if re.match(r' *\[ *scene *: *(.+?) *\]', line):
+                line_index = block('endscene', lines)+1
+                continue
 
-            if re.match(r'[ ]*\[[ ]*endblock[ ]*\]', line):
+            if re.match(r' *\[ *endscene *\]', line):
+                line_index = in_game_vars['_scene_return'].pop() #returns and removes the last indice
+                continue
+
+            if re.match(r' *\[ *endblock *\]', line):
                 line_index += 1
                 continue
-            if re.match(r'[ ]*\[[ ]*abort[ ]*\]', line):
+            if re.match(r' *\[ *abort *\]', line):
                 break
 
             txtout(trim(line))
