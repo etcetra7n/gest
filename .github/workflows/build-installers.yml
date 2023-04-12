@@ -41,7 +41,7 @@ jobs:
           files: |
             ./dist/gest
           outPath: gest-x64.tar.gz
-      
+
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
