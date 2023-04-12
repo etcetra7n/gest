@@ -10,7 +10,7 @@ pip install gester
 ## Using setup executable (Only on windows)
 Download the latest version of setup executable from
 [latest release](https://github.com/etcetra7n/gest/releases/latest) or from
-[sourceforge](https://sourceforge.net/projects/gester/files/latest/download).
+[sourceforge](https://sourceforge.net/projects/gester/files).
 Run this executable to have GEST installed. This installation method will also
 set up file type configurations which will make it easier to run the games
 
