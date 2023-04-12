@@ -92,7 +92,7 @@ Section "Configure .gest and .gsav file type" SEC_CONFIG_GEST_FILE
   ;WriteRegStr HKCR GEST.GameFile.1\DefaultIcon "" "$INSTDIR\gest.ico"
   WriteRegStr HKCR GEST.GameFile.1\shell\open\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
   WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gest\UserChoice "Progid" "GEST.GameFile.1"
-  
+
   WriteRegStr HKCR .gsav "" "GEST.SaveFile.1"
   WriteRegStr HKCR .gsav "Content Type" "text/plain"
   WriteRegStr HKCR .gsav "PerceivedType" "text"
@@ -104,8 +104,10 @@ SectionEnd
 
 Section "Enable $\"Play$\" button in right-click context menu" SEC_ENABLE_CONTEXT_MENU
   WriteRegStr HKCR .gest\Shell\gest "" "Play"
-  WriteRegStr HKCR .gest\Shell\gest "Extended" ""
   WriteRegStr HKCR .gest\Shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
+
+  WriteRegStr HKCR .gsav\Shell\gest "" "Play"
+  WriteRegStr HKCR .gsav\Shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
 SectionEnd
 
 ;======================================================
@@ -131,13 +133,14 @@ SectionEnd
 Section "un.Unconfigure .gest and .gsav file type" UNSEC_UNCONFIG_GEST_FILE
   DeleteRegKey HKCR GEST.GameFile.1
   DeleteRegKey HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gest
-  
+
   DeleteRegKey HKCR GEST.SaveFile.1
   DeleteRegKey HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gsav
 SectionEnd
 
 Section "un.Disable $\"Play$\" button in right-click context menu" UNSEC_DISABLE_CONTEXT_MENU
   DeleteRegKey HKCR .gest\Shell\gest
+  DeleteRegKey HKCR .gsav\Shell\gest
 SectionEnd
 
 ;======================================================
