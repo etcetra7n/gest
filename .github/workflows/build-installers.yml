@@ -40,13 +40,13 @@ jobs:
           cwd: .
           files: |
             ./dist/gest
-          outPath: gest-x64.tar.gz
+          outPath: gest-${{ github.event.inputs.version }}-win-x64.tar.gz
 
       - name: Upload binaries
         uses: actions/upload-artifact@v2
         with:
           name: gest-${{ github.event.inputs.version }}-win-x64.tar.gz
-          path: gest-x64.tar.gz
+          path: gest-${{ github.event.inputs.version }}-win-x64.tar.gz
       - name: Build installer
         run: |
           makensis /DVERSION="${{ github.event.inputs.version }}" /DARCH="x64" "nsis/installer.nsi"
