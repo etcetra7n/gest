@@ -177,6 +177,6 @@ pyrightconfig.json
 
 *.exe
 _ignore/
-*.gest
+src/*.gest
 *.gsav
 *.mp3
