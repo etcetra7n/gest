@@ -219,6 +219,7 @@ def main():
     file = argv[1]
     if not(isfile(file)):
         print(Fore.RED + "\nError:" + Fore.RESET + " This file cannot be located")
+        exit()
     try:
         if(file.endswith('.gest')):
             init_in_game_vars(file)
@@ -237,7 +238,9 @@ def main():
             print(Fore.RED + "\nError:" + Fore.RESET + " Unrecognized file type. \
 Only .gest and .gsav file extentions are supported")
     except KeyboardInterrupt:
-        exit() #exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
+        gsav_file.close()
+        exit()
+        # exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
 
 if __name__=='__main__':
     main()

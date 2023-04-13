@@ -15,6 +15,9 @@
 !ifndef LICENSE_PATH
   !define LICENSE_PATH "..\LICENSE"
 !endif
+!ifndef BUILD_DIR
+  !define BUILD_DIR "..\dist\gest\"
+!endif
 
 ;======================================================
 ; Installer Information
@@ -67,7 +70,7 @@ BrandingText "GEST ${VERSION}"
 Section "Basic installation" SEC_BASIC_INSTALLATION
   ; Write gest.exe to $INSTDIR
   SetOutPath $INSTDIR
-  File "..\dist\gest\"
+  File /nonfatal /a /r "${BUILD_DIR}"
   ;File ${CPY_ICO_PATH}
 
   ; Register application
