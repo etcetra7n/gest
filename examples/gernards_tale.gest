@@ -1,0 +1,62 @@
+[musicloop: FMcvrSrp91A_160.mp3]
+[input: name] Enter you player name:
+Hello { name }. Welcome to Gernard's Tale
+
+#[on game_end]  #not yet implemented
+#  Thanks for playing
+#[endblock]
+#[on session_start]  #not yet implemented
+#  You are playing Gernard's Tale
+#[endblock]
+
+You are about to enter a mistic and eerie world, full of wonders
+that will unfold before your eyes. Your progress will be saved
+automatically
+
+[yes_or_no: p] Are you ready to proceed?
+[{p} no]
+    [abort]
+[endblock]
+[{p} yes]
+    [play: intro]
+[endblock]
+
+[scene: intro]
+    [{name} 'john']
+      Hey youre john
+    [endblock]
+    [{name} 'alex']
+      Hey youre alex
+    [endblock]
+
+    I am on a planet called gernard's planet. You are on a
+    scientific mission, to collect as much information as
+    possible from this planet # comment
+    [stopmusic]
+
+    At first glance the planet look indistinguishable
+    from Earth. The grass seems green the sky is blue and
+    bright and cherfull. etc. However the trees are wierdly
+    shaped. There are no animals around. I wonder if there are any
+    smart-ass civilization set up.
+
+    I going to inspect closely...
+    #[branch: k] #feature not implemented yet
+    1. a wierd tree
+    2. a large boulder
+    [endblock]
+    #[k 1]
+      You inspect closer a wierd tree
+    [endblock]
+    #[k 2]
+      You inspect closer a large boulder
+    [endblock]
+
+    [play: scene_2]
+[endscene]
+
+[scene: scene_2]
+    This is te 2nd scene
+[endscene]
+
+The game is over
