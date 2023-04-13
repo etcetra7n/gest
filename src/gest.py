@@ -64,6 +64,9 @@ def txtout(txt):
         sleep(0.02)
 
 def play():
+    if '_bg_music' in in_game_vars:
+        music.load(in_game_vars['_bg_music'][0])
+        music.play(in_game_vars['_bg_music'][1])
     with open(in_game_vars['gest_file'], 'r') as f:
         lines = f.readlines()
         line_index = in_game_vars['line_index']
@@ -136,11 +139,13 @@ def play():
                 elif command == 'musicloop':
                     music.load(var)
                     music.play(-1)
+                    in_game_vars['_bg_music'] = [var, -1]
                     line_index += 1
                     continue
                 elif command == 'music':
                     music.load(var)
                     music.play()
+                    in_game_vars['_bg_music'] = [var, 0]
                     line_index += 1
                     continue
                 elif command == 'play':
@@ -197,6 +202,7 @@ def play():
                     break
                 if name == 'stopmusic':
                     music.fadeout(2000)
+                    in_game_vars.pop('_bg_music')
                     line_index += 1
                     continue
 
