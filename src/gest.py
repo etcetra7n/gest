@@ -5,6 +5,9 @@ import re
 #from keyboard import is_pressed
 import pickle
 from colorama import Fore
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+from pygame.mixer import music, init
 
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
@@ -130,19 +133,26 @@ def play():
                         continue
                     line_index += 1
                     continue
-
-            play_scene = re.search(r'\[ *play *: *(.+?) *\]', line)
-            if play_scene:
-                in_game_vars['_scene_return'].append(line_index+1)
-                scene_name = play_scene.group(1)
-                for l in range(len(lines)):
-                    if re.match(r' *\[ *scene *: *'+ scene_name + r' *\]', lines[l]):
-                        line_index = l+1
-                        break
-                else:
-                    print(Fore.RED+"\nScript Error:"+Fore.RESET+" Scene `"+scene_name+"` is not defined")
-                    exit()
-                continue
+                elif command == 'musicloop':
+                    music.load(var)
+                    music.play(-1)
+                    line_index += 1
+                    continue
+                elif command == 'music':
+                    music.load(var)
+                    music.play()
+                    line_index += 1
+                    continue
+                elif command == 'play':
+                    in_game_vars['_scene_return'].append(line_index+1)
+                    for l in range(len(lines)):
+                        if re.match(r' *\[ *scene *: *'+ var + r' *\]', lines[l]):
+                            line_index = l+1
+                            break
+                    else:
+                        print(Fore.RED+"\nScript Error:"+Fore.RESET+" Scene `"+scene_name+"` is not defined")
+                        exit()
+                    continue
 
             '''
             VARIABLE EQUALITY CONDITION
@@ -172,19 +182,27 @@ def play():
                 else:
                     line_index = block('endblock', lines)+1
                     continue
+
+            directive = re.search('\[ *(.+?) *\]', line)
+            if directive:
+                name = directive.group(1)
+                if name == 'endscene':
+                    line_index = in_game_vars['_scene_return'].pop()
+                    # pop() returns and removes the last indice
+                    continue
+                if name == 'endblock':
+                    line_index += 1
+                    continue
+                if name == 'abort':
+                    break
+                if name == 'stopmusic':
+                    music.fadeout(2000)
+                    line_index += 1
+                    continue
+
             if re.match(r' *\[ *scene *: *(.+?) *\]', line):
                 line_index = block('endscene', lines)+1
                 continue
-
-            if re.match(r' *\[ *endscene *\]', line):
-                line_index = in_game_vars['_scene_return'].pop() #returns and removes the last indice
-                continue
-
-            if re.match(r' *\[ *endblock *\]', line):
-                line_index += 1
-                continue
-            if re.match(r' *\[ *abort *\]', line):
-                break
 
             txtout(trim(line))
             line_index += 1
@@ -205,12 +223,14 @@ def main():
         if(file.endswith('.gest')):
             init_in_game_vars(file)
             gsav_file = open(in_game_vars['gsav_file'], 'wb')
+            init() # for music
             play()
             gsav_file.close()
         elif(file.endswith('.gsav')):
             with open(file, 'rb') as sf:
                 in_game_vars = pickle.load(sf)
             gsav_file = open(in_game_vars['gsav_file'], 'wb')
+            init() # for music
             play()
             gsav_file.close()
         else:
