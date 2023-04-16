@@ -54,9 +54,9 @@ def txtout(txt):
     for example:
         My name is {name}
     '''
-    embedded_var = re.findall(r'\{ *(.+?) *\}', txt)
+    embedded_var = re.findall(r'\{ *([a-zA-Z0-9_]*) *\}', txt)
     for var in embedded_var:
-        txt = re.sub(r'(\{.+?\})', in_game_vars[var], txt, count = 1)
+        txt = re.sub(r'(\{ *'+var+' *\})', in_game_vars[var], txt, count = 1)
 
     for char in txt:
         print(char, end='')
@@ -93,7 +93,7 @@ def play():
             for example:
                 [input: name] Enter your name:
             '''
-            com = re.search(r'\[ *(.+?) *: *(.+?) *\] *(.+?)?$', line)
+            com = re.search(r'\[ *([a-zA-Z_]*) *: *([^ ]*) *\] *(.*)', line)
             if com:
                 command = com.group(1)
                 var = com.group(2)
@@ -178,7 +178,7 @@ def play():
                 ...
                 [endblock]
             '''
-            con = re.search(r'\[ *\{(.+?)\} +[\'"]?(.+?)[\'"]? *\]', line)
+            con = re.search(r'\[ *\{([a-zA-Z0-9_]*)\} +\'?([^\']*)\'? *\]', line)
             if con:
                 if in_game_vars[con.group(1)] == con.group(2):
                     line_index += 1
@@ -188,25 +188,25 @@ def play():
                     line_index = block('endblock', lines)+1
                     continue
 
-            directive = re.search('\[ *(.+?) *\]', line)
+            directive = re.search('\[ *([a-zA-Z_]*) *\]', line)
             if directive:
                 name = directive.group(1)
                 if name == 'endscene':
                     line_index = in_game_vars['_scene_return'].pop()
                     # pop() returns and removes the last indice
                     continue
-                if name == 'endblock':
+                elif name == 'endblock':
                     line_index += 1
                     continue
-                if name == 'abort':
+                elif name == 'abort':
                     break
-                if name == 'stopmusic':
-                    music.fadeout(2000)
+                elif name == 'stopmusic':
+                    music.fadeout(1000)
                     in_game_vars.pop('_bg_music')
                     line_index += 1
                     continue
 
-            if re.match(r' *\[ *scene *: *(.+?) *\]', line):
+            if re.match(r' *\[ *scene *: *([a-zA-Z0-9_-]*) *\]', line):
                 line_index = block('endscene', lines)+1
                 continue
 
