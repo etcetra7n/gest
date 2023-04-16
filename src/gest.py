@@ -2,7 +2,6 @@ from sys import argv, stdout, exit
 from time import sleep
 from os.path import isfile, abspath
 import re
-#from keyboard import is_pressed
 import pickle
 from colorama import Fore
 from os import environ
@@ -40,7 +39,7 @@ def block(str, lines):
             jump_index = i+1
             break
     else:
-        print(Fore.RED + "\nnScript Error: " + Fore.RESET +"["+ str +"] not found")
+        print(Fore.RED + "\n\nScript Error: " + Fore.RESET +"["+ str +"] not found")
         exit()
     return jump_index
 
@@ -136,12 +135,16 @@ def play():
                     line_index += 1
                     continue
                 elif command == 'musicloop':
+                    if '_bg_music' in in_game_vars:
+                        music.fadeout(1000)
                     music.load(var)
                     music.play(-1)
                     in_game_vars['_bg_music'] = [var, -1]
                     line_index += 1
                     continue
                 elif command == 'music':
+                    if '_bg_music' in in_game_vars:
+                        music.fadeout(1000)
                     music.load(var)
                     music.play()
                     in_game_vars['_bg_music'] = [var, 0]
