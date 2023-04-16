@@ -12,8 +12,7 @@ from pygame.mixer import music, init
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
     in_game_vars['line_index'] = 0
-    gsav_file = re.search(r'^(.+?)\.gest$', abspath(gest_file))
-    in_game_vars['gsav_file'] = gsav_file.group(1) + '.gsav'
+    in_game_vars['gsav_file'] = abspath(gest_file)[:-4] + 'gsav'
     in_game_vars['_scene_return'] = []
     return
 
@@ -93,7 +92,7 @@ def play():
             for example:
                 [input: name] Enter your name:
             '''
-            com = re.search(r'\[ *([a-zA-Z_]*) *: *([^ ]*) *\] *(.*)', line)
+            com = re.search(r'\[ *([a-zA-Z_]*) *: *(.+?) *\] *(.*)', line)
             if com:
                 command = com.group(1)
                 var = com.group(2)
@@ -218,7 +217,6 @@ def main():
     global in_game_vars
     global gsav_file
     in_game_vars = {}
-    gsav_file = None
     if len(argv)<2:
         print(Fore.RED + "\nError:" + Fore.RESET + " Argument not provided")
         exit()
