@@ -7,13 +7,15 @@ from colorama import Fore
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from pygame.mixer import music, init
+from win32api import GetAsyncKeyState
+import win32con
+import pynput
 
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
     in_game_vars['line_index'] = 0
     in_game_vars['gsav_file'] = abspath(gest_file)[:-4] + 'gsav'
     in_game_vars['_scene_return'] = []
-    return
 
 def save():
     gsav_file.seek(0)
@@ -42,7 +44,7 @@ def block(str, lines):
         print(Fore.RED + "\n\nScript Error: " + Fore.RESET +"["+ str +"] not found")
         exit()
     return jump_index
-
+    
 def txtout(txt):
 
     '''
@@ -54,13 +56,18 @@ def txtout(txt):
     '''
     embedded_var = re.findall(r'\{ *([a-zA-Z0-9_]*) *\}', txt)
     for var in embedded_var:
-        txt = re.sub(r'(\{ *'+var+' *\})', in_game_vars[var], txt, count = 1)
-
+        txt = re.sub(r'({ *'+var+' *})', in_game_vars[var], txt)
+    _fast_txt=False
     for char in txt:
         print(char, end='')
         stdout.flush()
-        sleep(0.02)
-
+        state = GetAsyncKeyState(win32con.VK_CONTROL)
+        _fast_txt = state not in [0, 1]
+        if _fast_txt:
+            sleep(0.008)
+        else:
+            sleep(0.03)
+        
 def play():
     if '_bg_music' in in_game_vars:
         music.load(in_game_vars['_bg_music'][0])
@@ -91,7 +98,7 @@ def play():
             for example:
                 [input: name] Enter your name:
             '''
-            com = re.search(r'\[ *([a-zA-Z_]*) *: *(.+?) *\] *(.*)', line)
+            com = re.search(r'\[ *([a-zA-Z_]+) *: *(.+) *\] *(.*)', line)
             if com:
                 command = com.group(1)
                 var = com.group(2)
@@ -108,6 +115,7 @@ def play():
                     can be accessed by `{name}`
                     '''
                     txtout(prompt + ' ')
+                    
                     in_game_vars[var] = input()
                     line_index += 1
                     continue
@@ -180,7 +188,7 @@ def play():
                 ...
                 [endblock]
             '''
-            con = re.search(r'\[ *\{([a-zA-Z0-9_]*)\} +\'?([^\']*)\'? *\]', line)
+            con = re.search(r'\[ *{ *([a-zA-Z0-9_]+) *} +(.+) *\]', line)
             if con:
                 if in_game_vars[con.group(1)] == con.group(2):
                     line_index += 1
@@ -190,7 +198,7 @@ def play():
                     line_index = block('endblock', lines)+1
                     continue
 
-            directive = re.search('\[ *([a-zA-Z_]*) *\]', line)
+            directive = re.search(r'\[ *([a-zA-Z_]*) *\]', line)
             if directive:
                 name = directive.group(1)
                 if name == 'endscene':
