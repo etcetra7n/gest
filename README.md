@@ -41,3 +41,14 @@ automatically
 Go check out `example/` directory for more example.
 Gest command will invoke the game engine which will read the game
 script file (.gest file) and present the game on the command window
+
+### Features
+
+Using Gest you can make text based games with
+
+- Simple syntax
+- Use variable to store real-time values
+- IF Conditioning to make decision branches
+- Play background music
+- Make several `scenes` to partition and branch out your story
+- Write comments using `#` in your .gest file
