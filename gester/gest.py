@@ -45,11 +45,11 @@ def trim(str):
             break
     return str[begin:end]
 
-def block(str, lines):
+def block(str, lines, line_index):
     jump_index = 0
-    for i in range(in_game_vars['line_index']+1, len(lines)):
+    for i in range(line_index+1, len(lines)):
         if re.match(r' *\[ *'+str+r' *\]', lines[i]):
-            jump_index = i+1
+            jump_index = i
             break
     else:
         print(Fore.RED + "\n\nScript Error: " + Fore.RESET +"["+ str +"] not found")
@@ -199,14 +199,14 @@ def play():
                 ...
                 [endblock]
             '''
-            con = re.search(r'\[ *{ *([a-zA-Z0-9_]+) *} +(.+) *\]', line)
+            con = re.search(r'\[ *{ *([a-zA-Z0-9_]+) *} +[\'\"]?(.*?)[\'\"]?? *\]', line)
             if con:
                 if in_game_vars[con.group(1)] == con.group(2):
                     line_index += 1
                     continue
 
                 else:
-                    line_index = block('endblock', lines)+1
+                    line_index = block('endblock', lines, line_index)+1
                     continue
 
             directive = re.search(r'\[ *([a-zA-Z_]*) *\]', line)
@@ -228,7 +228,7 @@ def play():
                     continue
 
             if re.match(r' *\[ *scene *: *([a-zA-Z0-9_-]*) *\]', line):
-                line_index = block('endscene', lines)+1
+                line_index = block('endscene', lines, line_index)+1
                 continue
 
             txtout(trim(line))
