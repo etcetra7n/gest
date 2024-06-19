@@ -9,7 +9,6 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from pygame.mixer import music, init
 from win32api import GetAsyncKeyState
 import win32con
-import pynput
 
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)

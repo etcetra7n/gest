@@ -20,6 +20,7 @@ jobs:
         run: |
           choco install upx
           pip install pyinstaller
+          pip install pygame
           echo "Installing EnVar plugin for NSIS..."
           echo "Downloading 'EnVar_plugin.zip' from 'https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip'..."
           Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/7f/EnVar_plugin.zip -OutFile EnVar_plugin.zip
