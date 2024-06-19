@@ -199,7 +199,7 @@ def play():
                 ...
                 [endblock]
             '''
-            con = re.search(r'\[ *{ *([a-zA-Z0-9_]+) *} +[\'\"]?(.*?)[\'\"]?? *\]', line)
+            con = re.search(r'\[ *{ *([a-zA-Z0-9_]+) *} +[\'\"]?(.*?)[\'\"]? *\]', line)
             if con:
                 if in_game_vars[con.group(1)] == con.group(2):
                     line_index += 1
