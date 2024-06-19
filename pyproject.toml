@@ -1,18 +1,23 @@
-[project]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.0"
+
+[tool.poetry]
 name = "gester"
-version = "1.2.1"
+version = "1.3.2"
 description = "A game engine for console based text game"
 readme = "README.md"
-keywords = ["games", "game development", "game engine", "console"]
-license = {file = "LICENSE"}
-authors = [
-    {name = "etcetra7n", email = "greeknio@gmail.com"}
-]
-requires-python = ">=2.7"
+keywords = ["games", "game development", "game engine", "text-game-engine", "console game engine"]
+license = "BSL-1.0"
+authors = ["John Anchery <john.anchery@mail.ru>"]
+repository = "https://github.com/etcetra7n/gest"
+
 classifiers = [
     "Topic :: Games/Entertainment",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.3",
     "Programming Language :: Python :: 3.4",
@@ -25,11 +30,15 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: Boost Software License 1.0 (BSL-1.0)",
     "Operating System :: OS Independent",
-]
+    "Topic :: Games/Entertainment"
+    ]
 
-[project.scripts]
-gest = "gest:main"
+[tool.poetry.scripts]
+gest = 'gester.gest:main'
 
-[project.urls]
+[tool.poetry.extras]
+pygame = ["pygame"]
+
+[tool.poetry.urls]
 "Bug Tracker" = "https://github.com/etcetra7n/gest/issues"
-repository = "https://github.com/etcetra7n/gest"
+"Repository" = "https://github.com/etcetra7n/gest"
