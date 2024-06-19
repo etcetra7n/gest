@@ -38,6 +38,6 @@ automatically
 
   ...
 ```
-
+Go check out `example/` directory for more example.
 Gest command will invoke the game engine which will read the game
 script file (.gest file) and present the game on the command window
