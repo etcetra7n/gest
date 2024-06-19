@@ -110,3 +110,4 @@ _ignore/
 src/*.gest
 *.gsav
 src/*.mp3
+poetry.lock
