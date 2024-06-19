@@ -107,7 +107,7 @@ pyrightconfig.json
 
 *.exe
 _ignore/
-src/*.gest
+gester/*.gest
 *.gsav
-src/*.mp3
+gester/*.mp3
 poetry.lock
