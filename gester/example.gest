@@ -1,6 +1,6 @@
-[musicloop: FMcvrSrp91A_160.mp3]
+[musicloop: example.mp3]
 [input: name] Enter you player name:
-Hello { name }. Welcome to Gernard's Tale
+Hello { name }. Welcome to Gernald's Tale
 
 #[on game_end]  #not yet implemented
 #  Thanks for playing
@@ -31,22 +31,24 @@ automatically
 
 [scene: intro]
     [{name} 'john']
-      Hey youre john
+      good morning john
     [endblock]
     [{name} 'alex']
-      Hey youre alex
+      good morning alex
     [endblock]
 
-    I am on a planet called gernard's planet. You are on a
+    You are on a different planet. You are on a
     scientific mission, to collect as much information as
     possible from this planet # comment
-    [stopmusic]
+    
+    Press `ctrl` key to fast forward this text
 
     At first glance the planet look indistinguishable
     from Earth. The grass seems green the sky is blue and
     bright and cherfull. etc. However the trees are wierdly
     shaped. There are no animals around. I wonder if there are any
-    smart-ass civilization set up.
+    civilization set up.
+    [stopmusic]
 
     I going to inspect closely...
     #[branch: k] #feature not implemented yet
@@ -68,4 +70,4 @@ automatically
 	[play: credits]
 [endscene]
 
-The game is over
+This example game is over

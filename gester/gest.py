@@ -10,8 +10,18 @@ from pygame.mixer import music, init
 from win32api import GetAsyncKeyState
 import win32con
 
-__version__ = '1.3.2'
+__version__ = '1.3.4'
 
+def console_exit():
+    print('\n')
+    print(Fore.CYAN + "Press ENTER to exit... " + Fore.RESET, end = '')
+    stdout.flush()
+    #input()
+    while(True):
+        state = GetAsyncKeyState(win32con.VK_RETURN)
+        if state not in [0,1]:
+            exit()
+    
 def init_in_game_vars(gest_file):
     in_game_vars['gest_file'] = abspath(gest_file)
     in_game_vars['line_index'] = 0
@@ -43,7 +53,7 @@ def block(str, lines):
             break
     else:
         print(Fore.RED + "\n\nScript Error: " + Fore.RESET +"["+ str +"] not found")
-        exit()
+        console_exit()
     return jump_index
     
 def txtout(txt):
@@ -116,7 +126,7 @@ def play():
                     can be accessed by `{name}`
                     '''
                     txtout(prompt + ' ')
-                    
+                    #input()
                     in_game_vars[var] = input()
                     line_index += 1
                     continue
@@ -167,7 +177,7 @@ def play():
                             break
                     else:
                         print(Fore.RED+"\nScript Error:"+Fore.RESET+" Scene `"+scene_name+"` is not defined")
-                        exit()
+                        console_exit()
                     continue
 
             '''
@@ -231,14 +241,14 @@ def main():
     in_game_vars = {}
     if len(argv)<2:
         print(Fore.RED + "\nError:" + Fore.RESET + " Argument not provided")
-        exit()
+        console_exit()
     if argv[1]=='-v':
         print(__version__)
-        exit()
+        console_exit()
     file = argv[1]
     if not(isfile(file)):
         print(Fore.RED + "\nError:" + Fore.RESET + " This file cannot be located")
-        exit()
+        console_exit()
     try:
         if(file.endswith('.gest')):
             init_in_game_vars(file)
@@ -246,6 +256,7 @@ def main():
             init() # for music
             play()
             gsav_file.close()
+            console_exit()
         elif(file.endswith('.gsav')):
             with open(file, 'rb') as sf:
                 in_game_vars = pickle.load(sf)
@@ -253,12 +264,13 @@ def main():
             init() # for music
             play()
             gsav_file.close()
+            console_exit()
         else:
             print(Fore.RED + "\nError:" + Fore.RESET + " Unrecognized file type. \
 Only .gest and .gsav file extentions are supported")
     except KeyboardInterrupt:
         gsav_file.close()
-        exit()
+        console_exit()
         # exit the game in case the user press `ctrl+C` which raises a KeyboardInterrupt
 
 if __name__=='__main__':

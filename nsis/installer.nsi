@@ -91,7 +91,7 @@ Section "Configure .gest and .gsav file type" SEC_CONFIG_GEST_FILE
   WriteRegStr HKCR .gest "" "GEST.GameFile.1"
   WriteRegStr HKCR .gest "Content Type" "text/plain"
   WriteRegStr HKCR .gest "PerceivedType" "text"
-  WriteRegStr HKCR GEST.GameFile.1 "" "GEST Game"
+  WriteRegStr HKCR GEST.GameFile.1 "" "GEST Game File"
   ;WriteRegStr HKCR GEST.GameFile.1\DefaultIcon "" "$INSTDIR\gest.ico"
   WriteRegStr HKCR GEST.GameFile.1\shell\open\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
   WriteRegStr HKCU Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.gest\UserChoice "Progid" "GEST.GameFile.1"
@@ -106,11 +106,11 @@ Section "Configure .gest and .gsav file type" SEC_CONFIG_GEST_FILE
 SectionEnd
 
 Section "Enable $\"Play$\" button in right-click context menu" SEC_ENABLE_CONTEXT_MENU
-  WriteRegStr HKCR .gest\Shell\gest "" "Play"
-  WriteRegStr HKCR .gest\Shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
+  WriteRegStr HKCR .gest\shell\gest "" "Play"
+  WriteRegStr HKCR .gest\shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
 
-  WriteRegStr HKCR .gsav\Shell\gest "" "Play"
-  WriteRegStr HKCR .gsav\Shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
+  WriteRegStr HKCR .gsav\shell\gest "" "Play"
+  WriteRegStr HKCR .gsav\shell\gest\command "" "$\"$INSTDIR\gest.exe$\" $\"%1$\""
 SectionEnd
 
 ;======================================================
